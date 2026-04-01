@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flimoloji</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #141414;
+    color: white;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background: black;
+}
+
+h1 {
+    color: red;
+}
+
+input {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+}
+
+.container {
+    padding: 20px;
+}
+
+.movies {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.movie {
+    width: 200px;
+    cursor: pointer;
+}
+
+.movie img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.movie:hover {
+    transform: scale(1.05);
+}
+
+#player {
+    margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Flimoloji</h1>
+    <input type="text" id="search" placeholder="Film ara...">
+</header>
+
+<div class="container">
+    <h2>Popüler Filmler</h2>
+
+    <div class="movies" id="movieList"></div>
+
+    <div id="player"></div>
+</div>
+
+<script>
+const movies = [
+    {
+        title: "Inception",
+        image: "https://image.tmdb.org/t/p/w500/8h58OGp6n6Zp2Vj1fH7w9i7nYy.jpg",
+        trailer: "https://www.youtube.com/embed/YoHD9XEInc0"
+    },
+    {
+        title: "Interstellar",
+        image: "https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",
+        trailer: "https://www.youtube.com/embed/zSWdZVtXT7E"
+    },
+    {
+        title: "The Dark Knight",
+        image: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+        trailer: "https://www.youtube.com/embed/EXeTwQWrcwY"
+    }
+];
+
+const list = document.getElementById("movieList");
+const player = document.getElementById("player");
+
+function showMovies(data) {
+    list.innerHTML = "";
+    data.forEach(movie => {
+        const div = document.createElement("div");
+        div.className = "movie";
+
+        div.innerHTML = `
+            <img src="${movie.image}">
+            <p>${movie.title}</p>
+        `;
+
+        div.onclick = () => {
+            player.innerHTML = `
+                <iframe width="100%" height="400"
+                src="${movie.trailer}"
+                frameborder="0" allowfullscreen></iframe>
+            `;
+        };
+
+        list.appendChild(div);
+    });
+}
+
+showMovies(movies);
+
+// Arama
+document.getElementById("search").addEventListener("input", e => {
+    const value = e.target.value.toLowerCase();
+    const filtered = movies.filter(m =>
+        m.title.toLowerCase().includes(value)
+    );
+    showMovies(filtered);
+});
+</script>
+
+</body>
+</html>
